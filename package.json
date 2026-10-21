@@ -1,0 +1,11 @@
+{
+  "name": "jkm-global-traders-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Independent HTML5 pages for JKM Global Traders",
+  "scripts": {
+    "build": "python3 scripts/build_site.py",
+    "check": "python3 scripts/check_site.py && node --check assets/js/site.js && node --check assets/js/portal.js",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
