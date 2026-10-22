@@ -12,3 +12,5 @@ Unsplash licence: https://unsplash.com/license
 `jkm-monogram.jpg` is the approved JKM logo from this project. `favicon.svg` is a small JKM browser-tab mark.
 
 `jkm-logo-transparent.png` is the transparent logo supplied and approved by the user, used unchanged in the header and footer.
+
+`jkm-logo-color-transparent.png` is the approved navy and orange transparent logo, replacing the monochrome header/footer version.
