@@ -10,9 +10,13 @@ Contact numbers: +255766109131 and +255699830601. WhatsApp uses **+255699830601*
 
 ## Local use and checks
 
-Serve this folder with `python3 -m http.server 4173`. Open `http://localhost:4173`. No package install is needed. `npm run check` checks JavaScript syntax, every internal page/asset link, image decoding and contact destinations (Python Pillow required for the image check). `npm run build` regenerates the HTML from `scripts/build_site.py`; edit that source when changing page content. CSS and JS are directly editable in `assets/`.
+Serve this folder with `python3 -m http.server 4173`. Open `http://localhost:4173`. No package install is needed. `npm run check` checks JavaScript syntax, every internal page/asset link, image decoding and contact destinations (Python Pillow required for the image check). Edit each root HTML file directly to change page content. CSS and JavaScript are editable in `assets/`. `npm run build` copies these readable source files into `dist/` without regenerating or minifying them.
 
 Run `npm run build`, then deploy `dist/` as a static website to your chosen host (GitHub Pages, Netlify or Vercel). Publish only the intended website files; do not publish local secrets. No production host or custom domain has been configured by this implementation. After the final domain is known, add canonical metadata, sitemap.xml and robots.txt using that actual domain.
+
+## Code formatting
+
+Run `npm ci` to install the pinned development formatter. Use `npm run format` to format HTML, CSS, JavaScript, TypeScript, JSON, Markdown and SVG files, or `npm run format:check` to check formatting without changing files. `.editorconfig` and `.prettierrc.json` keep indentation consistent. The static website and Python build do not require Node dependencies to run.
 
 ## Supabase setup — required before online forms work
 

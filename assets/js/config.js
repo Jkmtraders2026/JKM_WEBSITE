@@ -3,5 +3,5 @@ window.JKM_CONFIG = Object.freeze({
   supabaseUrl: '',
   supabasePublishableKey: '',
   turnstileSiteKey: '',
-  social: { instagram: '', facebook: '', tiktok: '' }
+  social: { instagram: '', facebook: '', tiktok: '' },
 });
