@@ -37,7 +37,7 @@ This is a foundation for the planned web app, **not** a full order/accounting pl
 
 No client testimonials, trade volumes, company history, physical office address, licences or performance statistics are invented. Product categories are illustrative sourcing categories, not claims of stock. Review service scope and privacy/terms with the company before public launch.
 
-Four illustrative photos are downloaded into `assets/images/`, so images do not depend on external hotlinks. See `assets/images/CREDITS.md`. The logo derives from the approved JKM brand artwork. Google Fonts supplies DM Sans and Manrope; system fonts provide an offline fallback. The staff page loads pinned Supabase JS 2.49.8 from jsDelivr. Turnstile is loaded only when configured.
+Four illustrative photos are downloaded into `assets/images/`, so images do not depend on external hotlinks. See `assets/images/CREDITS.md`. The header and footer use the user-supplied transparent PNG logo, unchanged and displayed without cropping. Google Fonts supplies DM Sans and Manrope; system fonts provide an offline fallback. The staff page loads pinned Supabase JS 2.49.8 from jsDelivr. Turnstile is loaded only when configured.
 
 ## Automated intake tests
 
