@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import shutil
+from build_config import public_config, append_public_config
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,6 +11,10 @@ DIST = ROOT / "dist"
 
 def main():
     """Copy public website files into the deployment directory."""
+    try:
+        config = public_config()
+    except ValueError as error:
+        raise SystemExit(str(error)) from error
     pages = sorted(ROOT.glob("*.html"))
     if not pages or not (ROOT / "index.html").is_file():
         raise SystemExit("Cannot build: the website HTML pages are missing.")
@@ -21,6 +26,7 @@ def main():
     for page in pages:
         shutil.copy2(page, DIST / page.name)
     shutil.copytree(ROOT / "assets", DIST / "assets")
+    append_public_config(DIST / "assets/js/config.js", config)
 
     print(f"Packaged {len(pages)} HTML pages and assets in dist/.")
 
