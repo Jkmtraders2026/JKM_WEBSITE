@@ -115,6 +115,27 @@ Deno.serve(async (req) => {
   } catch (error) {
     return reply(400, { error: (error as Error).message });
   }
+  const submittedId = form.get('submission_id');
+  if (
+    submittedId !== null &&
+    (typeof submittedId !== 'string' ||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(submittedId))
+  )
+    return reply(400, { error: 'Invalid submission identifier.' });
+  const submissionId = submittedId || crypto.randomUUID();
+  const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  // Returning an existing opaque reference never creates a new request or uploads files.
+  // Retries need not reuse an already consumed CAPTCHA token.
+  if (submittedId) {
+    const { data, error } = await db
+      .from('website_requests')
+      .select('reference')
+      .eq('submission_id', submissionId)
+      .maybeSingle();
+    if (error)
+      return reply(503, { error: 'Request storage is unavailable. Please contact our team.' });
+    if (data) return reply(200, { reference: data.reference });
+  }
   const token = form.get('captcha_token');
   if (typeof token !== 'string' || !token || token.length > 2048)
     return reply(400, { error: 'Security verification required.' });
@@ -139,7 +160,6 @@ Deno.serve(async (req) => {
     if (!types[file.type] || file.size > 5 * 1024 * 1024 || !(await validSignature(file)))
       return reply(400, { error: 'Invalid file. Use JPG, PNG, WebP or PDF up to 5 MB.' });
   }
-  const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   const id = crypto.randomUUID();
   const uploaded: string[] = [];
   try {
@@ -160,11 +180,20 @@ Deno.serve(async (req) => {
       id.replaceAll('-', '').slice(0, 12).toUpperCase();
     const { error } = await db
       .from('website_requests')
-      .insert({ id, reference, ...fields, attachments });
+      .insert({ id, reference, submission_id: submissionId, ...fields, attachments });
     if (error) throw error;
     return reply(201, { reference });
   } catch {
     if (uploaded.length) await db.storage.from('request-files').remove(uploaded);
+    // A simultaneous retry may have won the unique submission_id insert.
+    if (submittedId) {
+      const { data } = await db
+        .from('website_requests')
+        .select('reference')
+        .eq('submission_id', submissionId)
+        .maybeSingle();
+      if (data) return reply(200, { reference: data.reference });
+    }
     return reply(500, {
       error: 'Request could not be saved. Please retry or contact us on WhatsApp.',
     });

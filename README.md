@@ -1,5 +1,11 @@
 # JKM Global Traders
 
+## Shared backend deployment
+
+Use [BACKEND_SETUP.md](BACKEND_SETUP.md) for the current versioned backend,
+hosting variables, staff setup and live verification. The initial SQL setup
+below is retained for historical context; do not reapply it to an existing project.
+
 A responsive, buildless HTML5, modern CSS and vanilla JavaScript website using navy `#10243A` and orange `#FF7E00`. Each page is a real HTML file with its own content and URL; no JavaScript router is needed. There is no CSS5 specification; the site uses current responsive CSS.
 
 ## Pages

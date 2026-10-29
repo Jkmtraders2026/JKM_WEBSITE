@@ -60,6 +60,10 @@ document.getElementById('tracking-form')?.addEventListener('submit', (event) => 
 });
 const quoteForm = document.getElementById('quote-form');
 let captchaToken = '';
+let submissionId = '';
+quoteForm?.addEventListener('input', () => {
+  submissionId = '';
+});
 let captchaWidget;
 const ready = () =>
   /^https:\/\/[a-z0-9.-]+$/.test(cfg.supabaseUrl || '') && Boolean(cfg.supabasePublishableKey);
@@ -138,6 +142,8 @@ if (quoteForm) {
     }
     const data = new FormData(quoteForm);
     data.set('captcha_token', captchaToken);
+    submissionId ||= crypto.randomUUID();
+    data.set('submission_id', submissionId);
     const button = quoteForm.querySelector('button[type=submit]');
     button.disabled = true;
     statusMessage('Sending your request…');
@@ -153,6 +159,7 @@ if (quoteForm) {
       const result = await response.json();
       if (!response.ok || !result.reference)
         throw new Error(result.error || 'Unable to send the request.');
+      submissionId = '';
       quoteForm.reset();
       statusMessage(
         `Request received. Your reference is ${result.reference}. Keep it for follow-up with our team.`,
